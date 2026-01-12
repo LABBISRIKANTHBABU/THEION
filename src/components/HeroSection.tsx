@@ -2,10 +2,11 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import heroVideo from "@/2219789076.mp4";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Animated Background */}
       {/* Background Video */}
       <div className="absolute inset-0 z-0">
@@ -14,17 +15,16 @@ const HeroSection = () => {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover grayscale opacity-40"
+          className="w-full h-full object-cover grayscale opacity-50"
         >
-          {/* Placeholder video - Replace with your matching asset */}
           <source
-            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
+            src={heroVideo}
             type="video/mp4"
           />
           Your browser does not support the video tag.
         </video>
-        {/* Overlay for "clear gray scale transparency" feel */}
-        <div className="absolute inset-0 bg-background/80 backdrop-grayscale" />
+        {/* Overlay for "clear gray scale transparency" feel - Reduced opacity for visibility */}
+        <div className="absolute inset-0 bg-background/20 backdrop-grayscale-[50%]" />
       </div>
 
       {/* Decorative Lines */}

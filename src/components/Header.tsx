@@ -48,7 +48,7 @@ const Header = () => {
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="relative shrink-0">
             <Link to="/" className="flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full overflow-hidden border border-primary/20 bg-black/50 backdrop-blur-sm shadow-lg">
+              <div className="w-22 h-20  overflow-hidden border border-primary/20 bg-black/50 backdrop-blur-sm shadow-lg">
                 <img
                   src={logoImg}
                   alt="Theion Consulting"
