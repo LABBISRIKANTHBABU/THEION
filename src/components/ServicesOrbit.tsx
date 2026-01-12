@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Monitor,
@@ -68,26 +68,56 @@ const ServicesOrbit = () => {
   const [activeService, setActiveService] = useState<string | null>(null);
   const [tooltipSide, setTooltipSide] = useState<'left' | 'right'>('right');
 
-  const orbitRadius = 210; // Reduced radius
+  // Dynamic radius based on screen width would be ideal, but for CSS-in-JS simple variables with tailwind is tricky 
+  // without a resize listener or CSS variable. 
+  // We'll use a responsive container and CSS transforms, but the x/y dist is calculated in JS.
+  // To make it responsive simpler: We'll stick to a radius that fits mobile (e.g. 140px) and scale up, 
+  // or use a resize listener. A resize listener is safer for maintaining the circle.
+
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1000);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 768;
+  const orbitRadius = isMobile ? 130 : 210; // Mobile vs Desktop radius
 
   const handleMouseEnter = (e: React.MouseEvent, serviceId: string) => {
-    setIsHovered(true);
-    setActiveService(serviceId);
+    if (!isMobile) {
+      setIsHovered(true);
+      setActiveService(serviceId);
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
 
-    if (rect.left + rect.width / 2 < viewportWidth / 2) {
-      setTooltipSide('left');
-    } else {
-      setTooltipSide('right');
+      if (rect.left + rect.width / 2 < viewportWidth / 2) {
+        setTooltipSide('left');
+      } else {
+        setTooltipSide('right');
+      }
+    }
+  };
+
+  const handleServiceClick = (e: React.MouseEvent | React.TouchEvent, serviceId: string) => {
+    // For mobile, clicking sets the active service
+    if (isMobile) {
+      if (activeService === serviceId) {
+        // If already active, let the link work (or toggle off if desired, but link is better)
+        return;
+      } else {
+        e.preventDefault(); // Prevent navigation on first tap if we want to just show label first
+        setActiveService(serviceId);
+      }
     }
   };
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden bg-background">
+    <section className="relative py-12 md:py-24 overflow-hidden bg-background">
       {/* Section Header */}
-      <div className="container px-6 mb-12 md:mb-16 relative z-10">
+      <div className="container px-6 mb-8 md:mb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -98,16 +128,16 @@ const ServicesOrbit = () => {
           <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
             Our Expertise
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mt-4">
+          <h2 className="font-display text-3xl md:text-5xl font-semibold text-foreground mt-4">
             Comprehensive Solutions
           </h2>
         </motion.div>
       </div>
 
-      {/* Desktop/Tablet Orbit View */}
-      <div className="hidden md:flex relative items-center justify-center h-[600px] w-full max-w-[800px] mx-auto perspective-[1000px]">
+      {/* Orbit View - Visible on ALL screens now */}
+      <div className="flex flex-col relative items-center justify-center h-[400px] md:h-[600px] w-full max-w-[800px] mx-auto perspective-[1000px]">
         {/* Center Static Logo */}
-        <div className="absolute z-20 w-48 h-48 rounded-full bg-card border border-primary/20 flex items-center justify-center shadow-2xl shadow-black/80">
+        <div className="absolute z-20 w-32 h-32 md:w-48 md:h-48 rounded-full bg-card border border-primary/20 flex items-center justify-center shadow-2xl shadow-black/80">
           <div className="absolute inset-0 rounded-full border border-primary/10 animate-pulse-glow" />
           <img
             src={logoImg}
@@ -116,15 +146,34 @@ const ServicesOrbit = () => {
           />
         </div>
 
+        {/* Mobile Central Active Service Label */}
+        {/* Only visible on mobile, positioned below the logo or overlaying */}
+        <AnimatePresence>
+          {isMobile && activeService && (
+            <div className="absolute z-50 pointer-events-none flex items-center justify-center w-full top-1/2 mt-20"> {/* Positioned nicely below logo center */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-black/80 backdrop-blur-md border border-primary/30 rounded-full px-6 py-2 shadow-xl"
+              >
+                <span className="text-primary font-display font-semibold text-sm tracking-wide">
+                  {services.find(s => s.id === activeService)?.name}
+                </span>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+
         {/* Rotating Orbit Container */}
         <div
-          className={`absolute inset-0 w-full h-full flex items-center justify-center animate-orbit ${isHovered ? 'paused' : ''}`}
+          className={`absolute inset-0 w-full h-full flex items-center justify-center animate-orbit ${isHovered || (isMobile && activeService) ? 'paused' : ''}`}
         >
           {services.map((service, index) => {
             const Icon = service.icon;
             // Calculate position for 3 items: 0, 120, 240 degrees
             const angleDeg = (index * 360) / services.length;
-            // -90 to start from top if needed, but 0 is fine for rotation
             const angleRad = (angleDeg * Math.PI) / 180;
 
             const x = Math.cos(angleRad) * orbitRadius;
@@ -139,14 +188,17 @@ const ServicesOrbit = () => {
                 }}
               >
                 {/* Counter-Rotating Node to keep it upright */}
-                <div className={`animate-counter-orbit ${isHovered ? 'paused' : ''}`}>
+                <div className={`animate-counter-orbit ${isHovered || (isMobile && activeService) ? 'paused' : ''}`}>
                   <Link
                     to={service.link}
                     className="relative group block"
+                    onClick={(e) => handleServiceClick(e, service.id)}
                     onMouseEnter={(e) => handleMouseEnter(e, service.id)}
                     onMouseLeave={() => {
-                      setIsHovered(false);
-                      setActiveService(null);
+                      if (!isMobile) {
+                        setIsHovered(false);
+                        setActiveService(null);
+                      }
                     }}
                   >
                     {/* Service Node Circle */}
@@ -156,17 +208,17 @@ const ServicesOrbit = () => {
                         borderColor: activeService === service.id ? "hsl(41 52% 54%)" : "rgba(255,255,255,0.1)",
                         backgroundColor: activeService === service.id ? "hsl(0 0% 8%)" : "rgba(10,10,10,0.8)"
                       }}
-                      className="w-20 h-20 rounded-full border backdrop-blur-md flex flex-col items-center justify-center relative z-30 transition-shadow duration-300"
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-full border backdrop-blur-md flex flex-col items-center justify-center relative z-30 transition-shadow duration-300"
                       style={{
                         boxShadow: activeService === service.id ? "0 0 30px -5px hsl(41 52% 54% / 0.4)" : "none"
                       }}
                     >
-                      <Icon className={`w-7 h-7 mb-1.5 transition-colors duration-300 ${activeService === service.id ? "text-primary" : "text-muted-foreground"}`} />
+                      <Icon className={`w-6 h-6 md:w-7 md:h-7 mb-1.5 transition-colors duration-300 ${activeService === service.id ? "text-primary" : "text-muted-foreground"}`} />
                     </motion.div>
 
-                    {/* Tooltip Label Panel */}
+                    {/* Tooltip Label Panel - DESKTOP ONLY */}
                     <AnimatePresence>
-                      {activeService === service.id && (
+                      {activeService === service.id && !isMobile && (
                         <motion.div
                           initial={{ opacity: 0, x: tooltipSide === 'left' ? -20 : 20, scale: 0.9 }}
                           animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -197,43 +249,6 @@ const ServicesOrbit = () => {
                 </div>
               </div>
             );
-          })}
-        </div>
-      </div>
-
-      {/* Mobile Fallback View */}
-      <div className="md:hidden container px-0 mt-8">
-        {/* Mobile Static Logo */}
-        <div className="flex justify-center mb-8">
-          <div className="w-40 h-40 rounded-full bg-card border border-primary/20 flex items-center justify-center shadow-lg relative">
-            <div className="absolute inset-0 rounded-full border border-primary/10 animate-pulse-glow" />
-            <img
-              src={logoImg}
-              alt="Theion Consulting Logo"
-              className="w-full h-full object-cover rounded-full p-2"
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-6 px-6">
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <Link key={service.id} to={service.link}>
-                <div className="bg-card border border-border/50 rounded-xl p-6 flex items-start gap-4 active:scale-98 transition-transform duration-200 hover:border-primary/30">
-                  <div className="w-12 h-12 shrink-0 rounded-full bg-background-secondary flex items-center justify-center border border-border/30 text-primary">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-lg font-semibold text-foreground mb-1">{service.name}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-3">{service.description}</p>
-                    <span className="text-xs font-medium text-primary flex items-center gap-1">
-                      Learn More <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            )
           })}
         </div>
       </div>
