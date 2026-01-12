@@ -1,0 +1,185 @@
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import logoImg from "@/Gemini_Generated_Image_2uj6d92uj6d92uj6.png";
+
+const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "/about-us" },
+    { name: "Clientele", href: "/clientele" },
+    { name: "Contact Us", href: "/contact-us" },
+  ];
+
+  const services = [
+    { name: "Theion Digital [SAAS]", href: "/theion-digital" },
+    { name: "Theion Technologies", href: "/theion-technologies" },
+    { name: "Theion Recruits", href: "/theion-recruits" },
+  ];
+
+  const isActive = (path: string) => location.pathname === path;
+
+  return (
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+        ? "bg-background/95 backdrop-blur-md border-b border-border/50"
+        : "bg-transparent"
+        }`}
+    >
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <motion.div whileHover={{ scale: 1.05 }} className="relative shrink-0">
+            <Link to="/" className="flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full overflow-hidden border border-primary/20 bg-black/50 backdrop-blur-sm shadow-lg">
+                <img
+                  src={logoImg}
+                  alt="Theion Consulting"
+                  className="w-full h-full object-cover scale-150"
+                />
+              </div>
+            </Link>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                className={`nav-link text-sm tracking-wide ${isActive(link.href) ? "active" : ""}`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link
+              to="/get-started"
+              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/80 to-primary text-primary-foreground text-sm font-semibold tracking-wide hover:shadow-[0_0_20px_-5px_hsl(41_52%_54%_/_0.5)] transition-all duration-300"
+            >
+              Get Started
+            </Link>
+          </nav>
+
+          {/* Services Dropdown - Desktop */}
+          <div className="hidden lg:block relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span className="tracking-wide">Services</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""
+                  }`}
+              />
+            </button>
+
+            <motion.div
+              initial={false}
+              animate={{
+                opacity: isDropdownOpen ? 1 : 0,
+                y: isDropdownOpen ? 0 : 10,
+                pointerEvents: isDropdownOpen ? "auto" : "none",
+              }}
+              transition={{ duration: 0.2 }}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+              className="absolute right-0 top-full mt-4 w-64 bg-card border border-border/50 rounded-lg overflow-hidden shadow-lg"
+            >
+              {services.map((service) => (
+                <Link
+                  key={service.name}
+                  to={service.href}
+                  className={`flex items-center px-5 py-4 text-sm transition-all duration-300 border-b border-border/30 last:border-0 ${isActive(service.href)
+                    ? "text-foreground bg-background-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background-secondary"
+                    }`}
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary mr-3" />
+                  {service.name}
+                </Link>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-2 text-foreground"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-background border-t border-border/50"
+          >
+            <nav className="container px-6 py-6 flex flex-col gap-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`text-sm tracking-wide py-2 ${isActive(link.href) ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="border-t border-border/30 pt-4 mt-2">
+                <span className="text-xs text-muted-foreground uppercase tracking-wider">Services</span>
+                {services.map((service) => (
+                  <Link
+                    key={service.name}
+                    to={service.href}
+                    className={`block text-sm tracking-wide py-2 mt-2 ${isActive(service.href) ? "text-primary" : "text-muted-foreground"
+                      }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {service.name}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="pt-4 mt-2">
+                <Link
+                  to="/get-started"
+                  className="block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-primary/80 to-primary text-primary-foreground text-sm font-bold tracking-wide shadow-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Get Started
+                </Link>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
+  );
+};
+
+export default Header;
