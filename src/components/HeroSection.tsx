@@ -17,9 +17,9 @@ const HeroSection = () => {
           className="w-full h-full object-cover grayscale opacity-40"
         >
           {/* Placeholder video - Replace with your matching asset */}
-          <source 
-            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" 
-            type="video/mp4" 
+          <source
+            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
+            type="video/mp4"
           />
           Your browser does not support the video tag.
         </video>
@@ -77,7 +77,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link to="/contact-us">
+            <Link to="/get-started">
               <Button className="btn-gold px-8 py-6 text-base rounded-full group">
                 Get Started Today
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />

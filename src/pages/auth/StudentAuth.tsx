@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GraduationCap, ArrowLeft, Mail, Lock, Loader2 } from "lucide-react";
-import logoImg from "@/Gemini_Generated_Image_2uj6d92uj6d92uj6.png";
+import logoImg from "@/Gemini_Generated_Image_86xpwe86xpwe86xp.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

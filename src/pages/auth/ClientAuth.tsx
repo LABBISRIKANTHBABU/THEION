@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Building2, ArrowLeft, Mail, Lock, Loader2 } from "lucide-react";
-import logoImg from "@/Gemini_Generated_Image_2uj6d92uj6d92uj6.png";
+import logoImg from "@/Gemini_Generated_Image_86xpwe86xpwe86xp.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

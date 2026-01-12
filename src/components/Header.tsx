@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import logoImg from "@/Gemini_Generated_Image_2uj6d92uj6d92uj6.png";
+import logoImg from "@/Gemini_Generated_Image_86xpwe86xpwe86xp.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,15 +44,15 @@ const Header = () => {
         }`}
     >
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="relative shrink-0">
             <Link to="/" className="flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full overflow-hidden border border-primary/20 bg-black/50 backdrop-blur-sm shadow-lg">
+              <div className="w-20 h-20 rounded-full overflow-hidden border border-primary/20 bg-black/50 backdrop-blur-sm shadow-lg">
                 <img
                   src={logoImg}
                   alt="Theion Consulting"
-                  className="w-full h-full object-cover scale-150"
+                  className="w-full h-full object-cover scale-[1.6]"
                 />
               </div>
             </Link>
