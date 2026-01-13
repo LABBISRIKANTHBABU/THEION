@@ -4,10 +4,13 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logoImg from "@/Gemini_Generated_Image_86xpwe86xpwe86xp.png";
 
+import { auth } from "@/lib/firebase"; // Import auth
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(auth.currentUser); // Track user state
   const location = useLocation();
 
   useEffect(() => {
@@ -15,7 +18,16 @@ const Header = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Auth listener
+    const unsubscribe = auth.onAuthStateChanged((u) => {
+      setUser(u);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
+    }
   }, []);
 
   const navLinks = [
@@ -69,12 +81,25 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            <Link
-              to="/get-started"
-              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/80 to-primary text-primary-foreground text-sm font-semibold tracking-wide hover:shadow-[0_0_20px_-5px_hsl(41_52%_54%_/_0.5)] transition-all duration-300"
-            >
-              Get Started
-            </Link>
+
+            {/* Dynamic Button: Profile or Get Started */}
+            {user ? (
+              <Link
+                to="/profile"
+                className="px-5 py-2.5 rounded-full bg-secondary/80 text-secondary-foreground text-sm font-semibold tracking-wide border border-primary/20 hover:bg-secondary transition-all duration-300 flex items-center gap-2"
+              >
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                Profile
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/80 to-primary text-primary-foreground text-sm font-semibold tracking-wide hover:shadow-[0_0_20px_-5px_hsl(41_52%_54%_/_0.5)] transition-all duration-300"
+              >
+                Get Started
+              </Link>
+            )}
+
           </nav>
 
           {/* Services Dropdown - Desktop */}
@@ -166,13 +191,24 @@ const Header = () => {
               </div>
 
               <div className="pt-4 mt-2">
-                <Link
-                  to="/get-started"
-                  className="block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-primary/80 to-primary text-primary-foreground text-sm font-bold tracking-wide shadow-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Get Started
-                </Link>
+                {/* Mobile Dynamic Button */}
+                {user ? (
+                  <Link
+                    to="/profile"
+                    className="block w-full text-center px-5 py-3 rounded-xl bg-secondary/80 text-secondary-foreground text-sm font-bold tracking-wide shadow-lg border border-primary/20"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    My Profile
+                  </Link>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-primary/80 to-primary text-primary-foreground text-sm font-bold tracking-wide shadow-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                )}
               </div>
             </nav>
           </motion.div>

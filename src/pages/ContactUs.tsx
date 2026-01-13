@@ -5,8 +5,9 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Clock, MessageCircle, Instagram, Linkedin, Twitter, Send } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MapPin, Phone, Mail, Clock, MessageCircle, Instagram, Linkedin, Twitter, Send, Loader2, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 const contactInfo = [
   {
@@ -38,41 +39,82 @@ const socialLinks = [
   { icon: Mail, href: "mailto:info@theionconsulting.com", label: "Email" },
 ];
 
+import BookingModal from "@/components/BookingModal";
+import { Video } from "lucide-react"; // Import Video icon
+
 const ContactUs = () => {
-  const { toast } = useToast();
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
+    phone: "",
+    countryCode: "+91",
+    role: "student" as "student" | "professional" | "client",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const countryCodes = [
+    { code: "+1", label: "US/CA" },
+    { code: "+44", label: "UK" },
+    { code: "+91", label: "IN" },
+    { code: "+61", label: "AU" },
+    { code: "+81", label: "JP" },
+    { code: "+971", label: "UAE" },
+    { code: "+33", label: "FR" },
+    { code: "+49", label: "DE" },
+  ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message Sent!",
-        description: "We'll get back to you within 24 hours.",
+
+    try {
+      // Using FormSubmit.co for direct email without backend/workflow
+      // Auto-replies and notifications are handled by FormSubmit.co
+      const response = await fetch("https://formsubmit.co/ajax/Info@theionconsulting.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: `${formData.countryCode} ${formData.phone}`,
+          role: formData.role,
+          message: formData.message,
+          _subject: `New Contact Request - ${formData.role.toUpperCase()}`,
+          _template: "table", // Pretty table format
+          _autoresponse: "your custom message here if you claim the email" // Optional
+        }),
       });
-      setFormData({ name: "", email: "", message: "" });
+
+      if (response.ok) {
+        toast.success("Message sent successfully!");
+        setFormData({ name: "", email: "", message: "", phone: "", countryCode: "+91", role: "student" });
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("An error occurred. Please try again later.");
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   const handleClear = () => {
-    setFormData({ name: "", email: "", message: "" });
+    setFormData({ name: "", email: "", message: "", phone: "", countryCode: "+91", role: "student" });
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial" />
+        <div className="absolute inset-0 bg-primary/5 blur-[120px]" />
         <div className="container relative px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -87,15 +129,15 @@ const ContactUs = () => {
               Connect with us <span className="text-gradient-gold">Now!</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Contact us for an initial call to understand your business requirements
+              We're here to help and answer any question you might have. We look forward to hearing from you.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Contact Content */}
-      <section className="py-20 bg-background-secondary">
-        <div className="container px-6">
+      <section className="py-20 bg-background-secondary relative">
+        <div className="container px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Left Column - Contact Info */}
             <motion.div
@@ -113,7 +155,7 @@ const ContactUs = () => {
                   const Icon = item.icon;
                   return (
                     <div key={item.label} className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-card border border-border/50 flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-card/60 border border-border/50 flex items-center justify-center flex-shrink-0 shadow-sm backdrop-blur-sm">
                         <Icon className="w-5 h-5 text-primary" />
                       </div>
                       <div>
@@ -127,18 +169,28 @@ const ContactUs = () => {
                 })}
               </div>
 
-              {/* WhatsApp Button */}
-              <a
-                href="https://wa.me/919912245345"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mb-10"
-              >
-                <Button className="btn-gold rounded-full px-6 py-5 group">
-                  <MessageCircle className="mr-2 w-5 h-5" />
-                  Message us on WhatsApp
+              {/* Action Buttons: WhatsApp & Booking */}
+              <div className="flex flex-col gap-4 mb-10">
+                <a
+                  href="https://wa.me/919912245345"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Button className="w-full sm:w-auto btn-gold rounded-full px-6 py-5 group shadow-lg hover:shadow-primary/20 transition-all">
+                    <MessageCircle className="mr-2 w-5 h-5" />
+                    Message us on WhatsApp
+                  </Button>
+                </a>
+
+                <Button
+                  onClick={() => setIsBookingOpen(true)}
+                  className="w-full sm:w-auto bg-card hover:bg-card/80 border border-primary/20 text-foreground rounded-full px-6 py-5 group shadow-lg transition-all"
+                >
+                  <Video className="mr-2 w-5 h-5 text-primary" />
+                  Book a Video Session
                 </Button>
-              </a>
+              </div>
 
               {/* Social Links */}
               <div>
@@ -153,8 +205,8 @@ const ContactUs = () => {
                         key={social.label}
                         href={social.href}
                         aria-label={social.label}
-                        className="w-11 h-11 rounded-full bg-card border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                        whileHover={{ y: -2 }}
+                        className="w-11 h-11 rounded-full bg-card/60 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300 backdrop-blur-sm"
+                        whileHover={{ y: -2, scale: 1.05 }}
                       >
                         <Icon className="w-5 h-5" />
                       </motion.a>
@@ -166,34 +218,61 @@ const ContactUs = () => {
 
             {/* Right Column - Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: 30, rotateY: -10 }}
+              whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
+              className="perspective-[1000px]"
             >
-              <div className="bg-card border border-border/50 rounded-2xl p-8 md:p-10">
-                <h2 className="font-display text-2xl font-semibold text-foreground mb-6">
+              <div className="bg-card/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                {/* Decorative Elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 blur-[50px] rounded-full pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
+
+                <h2 className="font-display text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                  <Send className="w-5 h-5 text-primary" />
                   Send us a Message
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm text-muted-foreground mb-2">
-                      Name
-                    </label>
-                    <Input
-                      id="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="h-12 bg-background border-border/50 text-foreground focus:border-primary focus:ring-primary/20"
-                      placeholder="Your name"
-                      required
-                    />
+                <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="name" className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                        Name
+                      </label>
+                      <Input
+                        id="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="h-11 bg-black/20 border-white/10 text-foreground focus:border-primary/50 focus:ring-primary/20 backdrop-blur-md transition-all"
+                        placeholder="Your name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="role" className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                        I am a
+                      </label>
+                      <Select
+                        value={formData.role}
+                        onValueChange={(value: any) => setFormData({ ...formData, role: value })}
+                      >
+                        <SelectTrigger className="h-11 bg-black/20 border-white/10 text-foreground focus:ring-primary/20 backdrop-blur-md">
+                          <SelectValue placeholder="Select Role" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-card border-white/10 text-foreground">
+                          <SelectItem value="student">Student</SelectItem>
+                          <SelectItem value="professional">Professional</SelectItem>
+                          <SelectItem value="client">Client</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm text-muted-foreground mb-2">
+                    <label htmlFor="email" className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
                       Email
                     </label>
                     <Input
@@ -201,61 +280,96 @@ const ContactUs = () => {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="h-12 bg-background border-border/50 text-foreground focus:border-primary focus:ring-primary/20"
+                      className="h-11 bg-black/20 border-white/10 text-foreground focus:border-primary/50 focus:ring-primary/20 backdrop-blur-md"
                       placeholder="your@email.com"
                       required
                     />
                   </div>
 
+                  {/* Phone Input with Country Code */}
                   <div>
-                    <label htmlFor="message" className="block text-sm text-muted-foreground mb-2">
+                    <label htmlFor="phone" className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                      Phone Number
+                    </label>
+                    <div className="flex gap-2">
+                      <Select
+                        value={formData.countryCode}
+                        onValueChange={(value) => setFormData({ ...formData, countryCode: value })}
+                      >
+                        <SelectTrigger className="w-[100px] h-11 bg-black/20 border-white/10 text-foreground focus:ring-primary/20 backdrop-blur-md">
+                          <SelectValue placeholder="+91" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-card border-white/10 text-foreground h-[200px]">
+                          {countryCodes.map((c) => (
+                            <SelectItem key={c.code} value={c.code}>
+                              <span className="flex items-center justify-between w-full min-w-[60px]">
+                                <span>{c.code}</span>
+                                <span className="text-muted-foreground text-xs ml-2">{c.label}</span>
+                              </span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="h-11 bg-black/20 border-white/10 text-foreground focus:border-primary/50 focus:ring-primary/20 backdrop-blur-md flex-1"
+                        placeholder="99999 99999"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
                       Message
                     </label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="min-h-[150px] bg-background border-border/50 text-foreground focus:border-primary focus:ring-primary/20 resize-none"
+                      className="min-h-[120px] bg-black/20 border-white/10 text-foreground focus:border-primary/50 focus:ring-primary/20 resize-none backdrop-blur-md"
                       placeholder="How can we help you?"
                       required
                     />
                   </div>
 
-                  {/* reCAPTCHA Notice */}
-                  <p className="text-xs text-muted-foreground">
-                    This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
-                  </p>
-
                   <div className="flex gap-4 pt-2">
                     <Button
                       type="submit"
-                      className="btn-gold flex-1 py-6 rounded-full"
+                      className="btn-gold flex-1 py-6 rounded-xl font-semibold shadow-lg shadow-primary/10 relative overflow-hidden"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
-                        "Sending..."
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
                       ) : (
                         <>
-                          <Send className="mr-2 w-4 h-4" />
                           Send Message
+                          <Send className="ml-2 w-4 h-4" />
                         </>
                       )}
                     </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="btn-outline-gold py-6 rounded-full px-8"
-                      onClick={handleClear}
-                    >
-                      Clear
-                    </Button>
                   </div>
+
+                  <p className="text-[10px] text-center text-white/30 pt-2">
+                    Secure 128-bit SSL Encrypted Connection
+                  </p>
                 </form>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
+
+      <BookingModal
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+      />
 
       <Footer />
     </div>

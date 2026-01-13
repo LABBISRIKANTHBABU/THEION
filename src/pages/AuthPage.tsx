@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import logoImg from "@/Gemini_Generated_Image_86xpwe86xpwe86xp.png";
+import WelcomePopup from "@/components/WelcomePopup";
 
 const AuthPage = () => {
     const navigate = useNavigate();
@@ -35,6 +36,8 @@ const AuthPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState<"student" | "professional" | "client" | null>(null);
+    const [showWelcome, setShowWelcome] = useState(false);
+    const [welcomeName, setWelcomeName] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     // Clear error when switching modes
@@ -42,25 +45,35 @@ const AuthPage = () => {
         setError(null);
     }, [isLogin]);
 
-    // Auto-redirect if already logged in
+    // Auto-redirect if already logged in - Only if NOT showing welcome popup
     useEffect(() => {
+        if (showWelcome) return; // Don't redirect while showing popup
+
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
-                setIsLoading(true);
-                try {
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
-                    if (userDoc.exists()) {
-                        redirectUser(userDoc.data().role);
-                    }
-                } catch (error) {
-                    console.error("Error fetching role on auto-redirect:", error);
-                } finally {
-                    setIsLoading(false);
+                // If we manually triggered welcome (e.g. after login submit), wait for that.
+                // But if user just visits page and is already logged in, maybe just redirect or show welcome?
+                // For smoother UX on refresh: just redirect. 
+                // For explicit login action: show welcome then redirect.
+                // We'll rely on the manual set of showWelcome for explicit actions.
+                // If we are already logged in and just visited /auth, maybe redirect to home directly or dashboard?
+                // Request said "Redirect directly into the home page".
+
+                // Let's check complexity: modifying onAuthStateChanged might fight with manual login flow.
+                // We will disable this auto-redirect effect for the explicit login flow using a ref or state check?
+                // Actually, if we set showWelcome(true) immediately after login, we can ignore this.
+
+                if (!isLoading && !showWelcome) {
+                    // Check if valid session exists and we are NOT in the middle of a login action
+                    // For now, let's keep it simple: login action sets showWelcome -> that handles redirect.
+                    // This effect handles "Page Refresh" or "Already Logged In" state.
+                    // We will redirect to Home as requested.
+                    navigate("/", { replace: true });
                 }
             }
         });
         return () => unsubscribe();
-    }, [navigate]);
+    }, [navigate, showWelcome, isLoading]);
 
     const handleGoogleSignIn = async () => {
         setIsLoading(true);
@@ -70,28 +83,14 @@ const AuthPage = () => {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
 
-            // Check if user document exists
+            // Check/Create User Doc Logic (Same as before)
             const userDocRef = doc(db, "users", user.uid);
             const userDoc = await getDoc(userDocRef);
 
             if (!userDoc.exists()) {
-                // If new Google user, we might need to ask for role.
-                // For simplicity in this flow, if they use Google and it's their first time,
-                // we might default them or show a "Finish Profile" modal.
-                // Per requirements "Role selection (Student/Professional/Client)" is needed.
-                // If we are strictly following the single page flow, we can ask for role even with Google if we want.
-                // But typically Google Sign In is "one click". 
-                // Let's assume for now we default or check if role is selected in state (unlikely if they just clicked G-button).
-                // A better UX: If new user via Google, redirect to an onboarding page. 
-                // OR: Force them to select role BEFORE clicking Google (if registering).
-                // Let's create the doc with a "pending" role or prompt after.
-                // For this implementation, let's create it as "student" default or specific if they selected a radio before clicking (if we enable that).
-
-                // Let's assume we force role selection for Google Sign Up if possible, or default. 
-                // Implementing simple default for now to keep flow unblocked:
                 await setDoc(userDocRef, {
                     email: user.email,
-                    role: role || "student", // Fallback to student if not selected
+                    role: role || "student",
                     provider: "google",
                     createdAt: new Date(),
                     displayName: user.displayName,
@@ -99,10 +98,9 @@ const AuthPage = () => {
                 });
             }
 
-            // Fetch role for redirect
-            const finalDoc = await getDoc(userDocRef);
-            const userData = finalDoc.data();
-            redirectUser(userData?.role);
+            // Show Welcome Popup instead of immediate redirect
+            setWelcomeName(user.displayName || user.email?.split('@')[0] || "User");
+            setShowWelcome(true);
 
         } catch (err: any) {
             console.error(err);
@@ -122,14 +120,10 @@ const AuthPage = () => {
                 // Login
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                const userDoc = await getDoc(doc(db, "users", user.uid));
 
-                if (userDoc.exists()) {
-                    redirectUser(userDoc.data().role);
-                } else {
-                    // Fallback if doc missing
-                    redirectUser("student");
-                }
+                // Show Welcome
+                setWelcomeName(user.displayName || user.email?.split('@')[0] || "User");
+                setShowWelcome(true);
             } else {
                 // Register
                 if (!role) {
@@ -149,7 +143,10 @@ const AuthPage = () => {
                 });
 
                 toast.success("Account created successfully!");
-                redirectUser(role);
+
+                // Show Welcome
+                setWelcomeName(user.displayName || user.email?.split('@')[0] || "User");
+                setShowWelcome(true);
             }
         } catch (err: any) {
             console.error(err);
@@ -358,6 +355,12 @@ const AuthPage = () => {
                     </p>
                 </div>
             </motion.div>
+
+            <WelcomePopup
+                isOpen={showWelcome}
+                onClose={() => setShowWelcome(false)}
+                userName={welcomeName}
+            />
         </div>
     );
 };

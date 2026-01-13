@@ -12,6 +12,7 @@ import TheionTechnologies from "./pages/TheionTechnologies";
 import TheionRecruits from "./pages/TheionRecruits";
 import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/AuthPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           {/* Unified Auth Route */}
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/get-started" element={<AuthPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
