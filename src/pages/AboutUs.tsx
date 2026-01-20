@@ -1,27 +1,36 @@
+import logoImg from "@/assets/theion-logo.jpg";
+import collaborativeImg from "@/assets/collaborative.png";
+import agileImg from "@/assets/agile.png";
+import outcomeImg from "@/assets/outcome.png";
+import teamImg from "@/assets/team.png";
+
 import { motion, useInView } from "framer-motion";
+
 import { useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Users, Target, Lightbulb, Handshake } from "lucide-react";
+
+
+// import { Users, Target, Lightbulb, Handshake } from "lucide-react";
 
 const approachItems = [
   {
-    icon: Handshake,
+    image: collaborativeImg,
     title: "Collaborative",
     description: "We work closely with clients to understand their unique challenges and goals.",
   },
   {
-    icon: Lightbulb,
+    image: agileImg,
     title: "Agile",
     description: "Adaptive methodologies that respond quickly to changing business needs.",
   },
   {
-    icon: Target,
+    image: outcomeImg,
     title: "Outcome-Driven",
     description: "Focused on delivering measurable value and tangible results.",
   },
   {
-    icon: Users,
+    image: teamImg,
     title: "Expert Team",
     description: "Experienced consultants, tech specialists, and recruitment professionals.",
   },
@@ -34,7 +43,7 @@ const AboutUs = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-radial" />
@@ -52,8 +61,8 @@ const AboutUs = () => {
               About <span className="text-gradient-gold">Theion Consulting</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Theion Consulting is a global firm established in 2023 with headquarters in London, United Kingdom. 
-              We provide IT consulting, business solutions, and talent services to organizations that aim for 
+              Theion Consulting is a global firm established in 2023 with headquarters in London, United Kingdom.
+              We provide IT consulting, business solutions, and talent services to organizations that aim for
               scalable, high-impact growth.
             </p>
           </motion.div>
@@ -74,13 +83,13 @@ const AboutUs = () => {
                 Who Are We
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                We work with organizations that aim for scalable, high-impact growth. Our expertise lies in 
-                aligning technology, strategy, and skilled talent with business objectives to deliver 
+                We work with organizations that aim for scalable, high-impact growth. Our expertise lies in
+                aligning technology, strategy, and skilled talent with business objectives to deliver
                 transformative results.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Our team brings together experienced consultants, technology specialists, and recruitment 
-                professionals who combine strategic thinking with hands-on expertise to understand your 
+                Our team brings together experienced consultants, technology specialists, and recruitment
+                professionals who combine strategic thinking with hands-on expertise to understand your
                 goals and deliver outcomes that matter.
               </p>
             </motion.div>
@@ -96,8 +105,8 @@ const AboutUs = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-64 h-64 rounded-full border border-primary/20 flex items-center justify-center">
                   <div className="w-48 h-48 rounded-full border border-primary/30 flex items-center justify-center">
-                    <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="font-display text-4xl font-bold text-gradient-gold">T</span>
+                    <div className="w-32 h-32 rounded-full bg-black flex items-center justify-center overflow-hidden shadow-lg">
+                      <img src={logoImg} alt="Theion Consulting" className="w-full h-full object-contain" />
                     </div>
                   </div>
                 </div>
@@ -123,38 +132,42 @@ const AboutUs = () => {
               Our Approach
             </h2>
             <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-              We deliver tailored solutions through collaborative, agile, and outcome-driven methodologies 
+              We deliver tailored solutions through collaborative, agile, and outcome-driven methodologies
               that align with your business objectives.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {approachItems.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="card-premium p-8 text-center"
-                >
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {item.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+            {approachItems.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="card-premium p-6 text-center group"
+              >
+                <div className="w-24 h-24 mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg border border-primary/20 group-hover:scale-105 transition-transform duration-300">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
+
+
 
       {/* Our Team Section */}
       <section className="py-20 bg-background-secondary">
@@ -172,12 +185,12 @@ const AboutUs = () => {
                 Our Team
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Our team consists of experienced consultants, technology specialists, and recruitment 
-                professionals who bring together strategic thinking and hands-on expertise. We work 
+                Our team consists of experienced consultants, technology specialists, and recruitment
+                professionals who bring together strategic thinking and hands-on expertise. We work
                 closely with clients to understand their goals and deliver outcomes that matter.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Our focus is on collaboration, accountability, and continuous improvement — ensuring 
+                Our focus is on collaboration, accountability, and continuous improvement — ensuring
                 every engagement creates lasting value for your organization.
               </p>
             </motion.div>
@@ -204,11 +217,11 @@ const AboutUs = () => {
               ))}
             </motion.div>
           </div>
-        </div>
-      </section>
+        </div >
+      </section >
 
       <Footer />
-    </div>
+    </div >
   );
 };
 
