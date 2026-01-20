@@ -3,30 +3,36 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Server, Shield, Cloud, Database } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/services/theon-technologies.jpg";
+// Using imported image from digital assets as placeholder
+import digitalTransformationImg from "@/assets/digital_transformation.png";
+const itInfrastructureImg = digitalTransformationImg;
+const cloudServicesImg = digitalTransformationImg;
+const cybersecurityImg = digitalTransformationImg;
+const dataSolutionsImg = digitalTransformationImg;
 
 const services = [
   {
-    icon: Server,
+    image: itInfrastructureImg,
     title: "IT Infrastructure",
-    description: "Design, deployment, and management of robust IT infrastructure solutions for enterprises."
+    description: "Design, deployment, and management of robust IT infrastructure solutions for enterprises.",
   },
   {
-    icon: Cloud,
+    image: cloudServicesImg,
     title: "Cloud Services",
-    description: "Cloud migration, optimization, and managed services for AWS, Azure, and Google Cloud."
+    description: "Cloud migration, optimization, and managed services for AWS, Azure, and Google Cloud.",
   },
   {
-    icon: Shield,
+    image: cybersecurityImg,
     title: "Cybersecurity",
-    description: "Comprehensive security solutions including assessments, implementation, and monitoring."
+    description: "Comprehensive security solutions including assessments, implementation, and monitoring.",
   },
   {
-    icon: Database,
+    image: dataSolutionsImg,
     title: "Data Solutions",
-    description: "Data architecture, analytics platforms, and business intelligence implementations."
-  }
+    description: "Data architecture, analytics platforms, and business intelligence implementations.",
+  },
 ];
 
 const technologies = [
@@ -55,7 +61,7 @@ const TheonTechnologies = () => {
                 Theon <span className="text-gradient-gold">Technologies</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Enterprise technology consulting and infrastructure solutions. We help 
+                Enterprise technology consulting and infrastructure solutions. We help
                 organizations build resilient, scalable, and secure technology foundations.
               </p>
               <Link to="/contact-us">
@@ -72,9 +78,9 @@ const TheonTechnologies = () => {
               className="relative"
             >
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
-                <img 
-                  src={heroImg} 
-                  alt="Theon Technologies" 
+                <img
+                  src={heroImg}
+                  alt="Theon Technologies"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -100,32 +106,35 @@ const TheonTechnologies = () => {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              return (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="card-premium p-8 flex gap-6"
-                >
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="grid md:grid-cols-2 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="card-premium overflow-hidden group"
+              >
+                <div className="relative h-64 w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -180,8 +189,8 @@ const TheonTechnologies = () => {
                 Who Is It For?
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our technology solutions cater to enterprises seeking to modernize their IT infrastructure, 
-                organizations migrating to cloud platforms, and businesses requiring robust cybersecurity 
+                Our technology solutions cater to enterprises seeking to modernize their IT infrastructure,
+                organizations migrating to cloud platforms, and businesses requiring robust cybersecurity
                 and data management solutions.
               </p>
             </motion.div>

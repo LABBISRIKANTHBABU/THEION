@@ -5,32 +5,44 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/services/theon-digital.jpg";
+import customSoftwareImg from "@/assets/custom_software.png";
+import digitalTransformationImg from "@/assets/digital_transformation.png";
+import cloudSolutionsImg from "@/assets/cloud_solutions.png";
+import mobileAppImg from "@/assets/mobile_app.png";
+import enterpriseIntegrationImg from "@/assets/enterprise_integration.png";
+import dataAnalyticsImg from "@/assets/data_analytics.png";
 
-const features = [
+const services = [
   {
+    image: customSoftwareImg,
     title: "Custom Software Development",
-    description: "Tailored software solutions designed to meet your unique business requirements and drive operational efficiency."
+    description: "Tailored software solutions designed to meet your unique business requirements and drive operational efficiency.",
   },
   {
+    image: digitalTransformationImg,
     title: "Digital Transformation",
-    description: "End-to-end digital transformation strategies that modernize your business processes and technology stack."
+    description: "End-to-end digital transformation strategies that modernize your business processes and technology stack.",
   },
   {
+    image: cloudSolutionsImg,
     title: "Cloud Solutions",
-    description: "Scalable cloud infrastructure and migration services to enhance flexibility and reduce operational costs."
+    description: "Scalable cloud infrastructure and migration services to enhance flexibility and reduce operational costs.",
   },
   {
+    image: mobileAppImg,
     title: "Mobile App Development",
-    description: "Native and cross-platform mobile applications that deliver exceptional user experiences."
+    description: "Native and cross-platform mobile applications that deliver exceptional user experiences.",
   },
   {
+    image: enterpriseIntegrationImg,
     title: "Enterprise Integration",
-    description: "Seamless integration of disparate systems to create unified, efficient business workflows."
+    description: "Seamless integration of disparate systems to create unified, efficient business workflows.",
   },
   {
+    image: dataAnalyticsImg,
     title: "Data Analytics & AI",
-    description: "Advanced analytics and AI-powered insights to drive data-informed decision making."
-  }
+    description: "Advanced analytics and AI-powered insights to drive data-informed decision making.",
+  },
 ];
 
 const TheonDigital = () => {
@@ -55,7 +67,7 @@ const TheonDigital = () => {
                 Theon <span className="text-gradient-gold">Digital</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Transform your business with cutting-edge software solutions and comprehensive 
+                Transform your business with cutting-edge software solutions and comprehensive
                 digital transformation services designed for the modern enterprise.
               </p>
               <Link to="/contact-us">
@@ -72,9 +84,9 @@ const TheonDigital = () => {
               className="relative"
             >
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
-                <img 
-                  src={heroImg} 
-                  alt="Theon Digital Solutions" 
+                <img
+                  src={heroImg}
+                  alt="Theon Digital Solutions"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -83,7 +95,7 @@ const TheonDigital = () => {
         </div>
       </section>
 
-      {/* What We Offer */}
+      {/* Services Section */}
       <section className="py-20 bg-background-secondary">
         <div className="container px-6">
           <motion.div
@@ -103,22 +115,33 @@ const TheonDigital = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
               <motion.div
-                key={feature.title}
+                key={service.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="card-premium p-8"
+                whileHover={{ y: -5 }}
+                className="card-premium overflow-hidden group"
               >
-                <h3 className="font-display text-xl font-semibold text-foreground mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {feature.description}
-                </p>
+                <div className="relative h-48 w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -141,9 +164,9 @@ const TheonDigital = () => {
                 Who Is It For?
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                Our digital solutions are designed for forward-thinking organizations that want to 
-                leverage technology for competitive advantage. Whether you're a startup looking to 
-                build your first product or an enterprise seeking digital transformation, we have 
+                Our digital solutions are designed for forward-thinking organizations that want to
+                leverage technology for competitive advantage. Whether you're a startup looking to
+                build your first product or an enterprise seeking digital transformation, we have
                 the expertise to help you succeed.
               </p>
               <div className="grid md:grid-cols-3 gap-6 mt-12">

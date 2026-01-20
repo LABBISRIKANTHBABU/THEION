@@ -3,30 +3,35 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Plane, Building, MapPin, CreditCard } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/services/theon-travel.jpg";
+// Using imported image from overseas as placeholder
+import corporateTravelImg from "@/assets/services/overseas/international_placements.png";
+const miceServicesImg = corporateTravelImg;
+const destinationManagementImg = corporateTravelImg;
+const travelExpenseManagementImg = corporateTravelImg;
 
 const services = [
   {
-    icon: Plane,
+    image: corporateTravelImg,
     title: "Corporate Travel Management",
-    description: "Comprehensive travel booking and management services for business travelers and corporate accounts."
+    description: "Comprehensive travel booking and management services for business travelers and corporate accounts.",
   },
   {
-    icon: Building,
+    image: miceServicesImg,
     title: "MICE Services",
-    description: "Expert planning and execution for Meetings, Incentives, Conferences, and Exhibitions."
+    description: "Expert planning and execution for Meetings, Incentives, Conferences, and Exhibitions.",
   },
   {
-    icon: MapPin,
+    image: destinationManagementImg,
     title: "Destination Management",
-    description: "Local expertise and ground handling services at destinations worldwide."
+    description: "Local expertise and ground handling services at destinations worldwide.",
   },
   {
-    icon: CreditCard,
+    image: travelExpenseManagementImg,
     title: "Travel Expense Management",
-    description: "Streamlined expense tracking and reporting solutions for corporate travel programs."
-  }
+    description: "Streamlined expense tracking and reporting solutions for corporate travel programs.",
+  },
 ];
 
 const benefits = [
@@ -60,7 +65,7 @@ const TheonTravel = () => {
                 Theon <span className="text-gradient-gold">Travel</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Premium corporate travel management services designed to optimize your 
+                Premium corporate travel management services designed to optimize your
                 business travel experience while maximizing efficiency and cost savings.
               </p>
               <Link to="/contact-us">
@@ -77,9 +82,9 @@ const TheonTravel = () => {
               className="relative"
             >
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
-                <img 
-                  src={heroImg} 
-                  alt="Theon Travel Services" 
+                <img
+                  src={heroImg}
+                  alt="Theon Travel Services"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -105,32 +110,35 @@ const TheonTravel = () => {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              return (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="card-premium p-8 flex gap-6"
-                >
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="grid md:grid-cols-2 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="card-premium overflow-hidden group"
+              >
+                <div className="relative h-64 w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -185,8 +193,8 @@ const TheonTravel = () => {
                 Who Is It For?
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our travel services are designed for corporations with frequent business travel needs, 
-                executives seeking premium travel experiences, and organizations hosting corporate 
+                Our travel services are designed for corporations with frequent business travel needs,
+                executives seeking premium travel experiences, and organizations hosting corporate
                 events and conferences around the world.
               </p>
             </motion.div>

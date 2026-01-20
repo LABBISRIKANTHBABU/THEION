@@ -3,30 +3,34 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Users, FileCheck, Building } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/services/theon-overseas.jpg";
+import immigrationConsultingImg from "@/assets/services/overseas/immigration_consulting.png";
+import internationalPlacementsImg from "@/assets/services/overseas/international_placements.png";
+import documentProcessingImg from "@/assets/services/overseas/document_processing.png";
+import relocationSupportImg from "@/assets/services/overseas/relocation_support.png";
 
 const services = [
   {
-    icon: Globe,
+    image: immigrationConsultingImg,
     title: "Immigration Consulting",
-    description: "Expert guidance on visa applications, work permits, and immigration processes for multiple countries."
+    description: "Expert guidance on visa applications, work permits, and immigration processes for multiple countries.",
   },
   {
-    icon: Users,
+    image: internationalPlacementsImg,
     title: "International Placements",
-    description: "Connect with global opportunities through our extensive network of international employers."
+    description: "Connect with global opportunities through our extensive network of international employers.",
   },
   {
-    icon: FileCheck,
+    image: documentProcessingImg,
     title: "Document Processing",
-    description: "Comprehensive document verification, attestation, and processing services."
+    description: "Comprehensive document verification, attestation, and processing services.",
   },
   {
-    icon: Building,
+    image: relocationSupportImg,
     title: "Relocation Support",
-    description: "End-to-end relocation assistance including accommodation, banking, and settlement services."
-  }
+    description: "End-to-end relocation assistance including accommodation, banking, and settlement services.",
+  },
 ];
 
 const destinations = [
@@ -55,7 +59,7 @@ const TheonOverseas = () => {
                 Theon <span className="text-gradient-gold">Overseas</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Your gateway to international opportunities. We help professionals and 
+                Your gateway to international opportunities. We help professionals and
                 businesses expand beyond borders with expert immigration and relocation services.
               </p>
               <Link to="/contact-us">
@@ -72,9 +76,9 @@ const TheonOverseas = () => {
               className="relative"
             >
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
-                <img 
-                  src={heroImg} 
-                  alt="Theon Overseas Services" 
+                <img
+                  src={heroImg}
+                  alt="Theon Overseas Services"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -100,32 +104,35 @@ const TheonOverseas = () => {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              return (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="card-premium p-8 flex gap-6"
-                >
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="grid md:grid-cols-2 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="card-premium overflow-hidden group"
+              >
+                <div className="relative h-64 w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -180,8 +187,8 @@ const TheonOverseas = () => {
                 Who Is It For?
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our overseas services are designed for professionals seeking international careers, 
-                students pursuing education abroad, businesses expanding globally, and families 
+                Our overseas services are designed for professionals seeking international careers,
+                students pursuing education abroad, businesses expanding globally, and families
                 looking to relocate to new countries for better opportunities.
               </p>
             </motion.div>

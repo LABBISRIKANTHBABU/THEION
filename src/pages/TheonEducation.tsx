@@ -3,30 +3,35 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Award, Users, Monitor } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/services/theon-education.jpg";
+import technicalTrainingImg from "@/assets/services/education/technical_training.png";
+// Using technicalTrainingImg as placeholder for others
+const corporateTrainingImg = technicalTrainingImg;
+const professionalCertificationsImg = technicalTrainingImg;
+const skillDevelopmentImg = technicalTrainingImg;
 
 const programs = [
   {
-    icon: Monitor,
+    image: technicalTrainingImg,
     title: "Technical Training",
-    description: "Industry-relevant courses in software development, data science, cloud computing, and cybersecurity."
+    description: "Industry-relevant courses in software development, data science, cloud computing, and cybersecurity.",
   },
   {
-    icon: Users,
+    image: corporateTrainingImg,
     title: "Corporate Training",
-    description: "Customized training programs for organizations to upskill their workforce."
+    description: "Customized training programs for organizations to upskill their workforce.",
   },
   {
-    icon: BookOpen,
+    image: professionalCertificationsImg,
     title: "Professional Certifications",
-    description: "Preparation courses for globally recognized certifications in various domains."
+    description: "Preparation courses for globally recognized certifications in various domains.",
   },
   {
-    icon: Award,
+    image: skillDevelopmentImg,
     title: "Skill Development",
-    description: "Soft skills, leadership, and management training for career advancement."
-  }
+    description: "Soft skills, leadership, and management training for career advancement.",
+  },
 ];
 
 const features = [
@@ -60,7 +65,7 @@ const TheonEducation = () => {
                 Theon <span className="text-gradient-gold">Education</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Empowering professionals with world-class training and skill development 
+                Empowering professionals with world-class training and skill development
                 programs designed to accelerate career growth and organizational success.
               </p>
               <Link to="/contact-us">
@@ -77,9 +82,9 @@ const TheonEducation = () => {
               className="relative"
             >
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
-                <img 
-                  src={heroImg} 
-                  alt="Theon Education Programs" 
+                <img
+                  src={heroImg}
+                  alt="Theon Education Programs"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -105,32 +110,35 @@ const TheonEducation = () => {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {programs.map((program, index) => {
-              const Icon = program.icon;
-              return (
-                <motion.div
-                  key={program.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="card-premium p-8 flex gap-6"
-                >
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      {program.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {program.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="grid md:grid-cols-2 gap-8">
+            {programs.map((program, index) => (
+              <motion.div
+                key={program.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="card-premium overflow-hidden group"
+              >
+                <div className="relative h-64 w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {program.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {program.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -185,8 +193,8 @@ const TheonEducation = () => {
                 Who Is It For?
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our education programs cater to students looking to kickstart their careers, 
-                professionals seeking to upskill, and organizations wanting to develop their 
+                Our education programs cater to students looking to kickstart their careers,
+                professionals seeking to upskill, and organizations wanting to develop their
                 workforce capabilities for sustained competitive advantage.
               </p>
             </motion.div>
