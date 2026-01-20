@@ -69,44 +69,58 @@ const ContactUs = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      // Using FormSubmit.co for direct email without backend/workflow
-      // Auto-replies and notifications are handled by FormSubmit.co
-      const response = await fetch("https://formsubmit.co/ajax/Info@theionconsulting.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: `${formData.countryCode} ${formData.phone}`,
-          role: formData.role,
-          message: formData.message,
-          _subject: `New Contact Request - ${formData.role.toUpperCase()}`,
-          _template: "table", // Pretty table format
-          _autoresponse: "your custom message here if you claim the email" // Optional
-        }),
-      });
+    const payload = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      role: formData.role,
+      phone: `${formData.countryCode} ${formData.phone}`.trim(),
+      message: formData.message.trim(),
+      source: "contact_page"
+    };
 
-      if (response.ok) {
-        toast.success("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "", phone: "", countryCode: "+91", role: "student" });
+    console.log("CONTACT PAYLOAD:", payload);
+
+    try {
+      const response = await fetch(
+        "https://theion.app.n8n.cloud/webhook-test/contact-form",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      let result: any = null;
+      try {
+        result = await response.json();
+      } catch {
+        result = null;
+      }
+
+      if (response.ok && result?.success) {
+        toast.success(result.message);
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+          phone: "",
+          countryCode: "+91",
+          role: "student"
+        });
       } else {
-        toast.error("Failed to send message. Please try again.");
+        toast.error("Message submitted, but response unavailable.");
       }
     } catch (error) {
-      console.error("Error sending message:", error);
-      toast.error("An error occurred. Please try again later.");
+      console.error("Network error:", error);
+      toast.error("Unable to reach server. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleClear = () => {
-    setFormData({ name: "", email: "", message: "", phone: "", countryCode: "+91", role: "student" });
-  };
+
 
   return (
     <div className="min-h-screen bg-background">
