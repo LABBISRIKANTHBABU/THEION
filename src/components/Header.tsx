@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import logoImg from "@/Gemini_Generated_Image_86xpwe86xpwe86xp.png";
+import logoImg from "@/assets/theion-logo.jpg";
 
 import { auth } from "@/lib/firebase"; // Import auth
 
@@ -56,15 +56,15 @@ const Header = () => {
         }`}
     >
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-28">
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="relative shrink-0">
             <Link to="/" className="flex items-center justify-center">
-              <div className="w-22 h-20  overflow-hidden border border-primary/20 bg-black/50 backdrop-blur-sm shadow-lg">
+              <div className="w-24 h-24 rounded-full overflow-hidden border border-primary/20 bg-black shadow-lg flex items-center justify-center">
                 <img
                   src={logoImg}
                   alt="Theion Consulting"
-                  className="w-full h-full object-cover scale-[1.6]"
+                  className="w-full h-full object-contain"
                 />
               </div>
             </Link>
