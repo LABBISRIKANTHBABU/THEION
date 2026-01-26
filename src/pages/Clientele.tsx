@@ -2,11 +2,69 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-// Partner logos represented as styled text blocks (placeholder for actual logos)
+// Import client logos
+import oracleLogo from "@/assets/clients/oracle.jpg";
+import metaLogo from "@/assets/clients/meta.jpg";
+import awsLogo from "@/assets/clients/aws.jpg";
+import microsoftLogo from "@/assets/clients/microsoft.jpg";
+import sapLogo from "@/assets/clients/sap.jpg";
+import adobeLogo from "@/assets/clients/adobe.jpg";
+import thyTargetLogo from "@/assets/clients/thy-target.jpg";
+import tapLogo from "@/assets/clients/tap.jpg";
+import upgradLogo from "@/assets/clients/upgrad.jpg";
+import keyloopLogo from "@/assets/clients/keyloop.jpg";
+
 const partners = [
-  "Partner 1", "Partner 2", "Partner 3", "Partner 4",
-  "Partner 5", "Partner 6", "Partner 7", "Partner 8",
-  "Partner 9", "Partner 10", "Partner 11", "Partner 12",
+  {
+    name: "Oracle",
+    logo: oracleLogo,
+    description: "Global leader in cloud computing and enterprise software solutions, powering businesses worldwide with innovative database and cloud technologies."
+  },
+  {
+    name: "Meta",
+    logo: metaLogo,
+    description: "Pioneer in social technology and metaverse development, connecting billions of people through Facebook, Instagram, WhatsApp, and cutting-edge VR platforms."
+  },
+  {
+    name: "AWS",
+    logo: awsLogo,
+    description: "Amazon Web Services - the world's most comprehensive and broadly adopted cloud platform, offering over 200 fully featured services globally."
+  },
+  {
+    name: "Microsoft",
+    logo: microsoftLogo,
+    description: "Technology giant empowering individuals and organizations through innovative software, cloud services, and enterprise solutions."
+  },
+  {
+    name: "SAP",
+    logo: sapLogo,
+    description: "Market leader in enterprise application software, helping companies run at their best with intelligent ERP and business solutions."
+  },
+  {
+    name: "Adobe",
+    logo: adobeLogo,
+    description: "Creative and digital experience leader, revolutionizing how the world creates, communicates, and collaborates through innovative software."
+  },
+  {
+    name: "Thy Target",
+    logo: thyTargetLogo,
+    description: "Strategic marketing and brand consultancy specializing in targeted campaigns and digital growth strategies for modern businesses."
+  },
+  {
+    name: "TAP",
+    logo: tapLogo,
+    description: "Innovative technology and payment solutions provider, enabling seamless digital transactions and business automation."
+  },
+  {
+    name: "upGrad",
+    logo: upgradLogo,
+    description: "India's largest online higher education company, partnering with world-class universities to offer career-impacting programs."
+  },
+  {
+    name: "Keyloop",
+    logo: keyloopLogo,
+    description: "Leading automotive retail technology provider, transforming the car buying experience with innovative digital solutions."
+  },
 ];
 
 const Clientele = () => {
@@ -40,7 +98,7 @@ const Clientele = () => {
       {/* Partners Grid */}
       <section className="py-20 bg-background-secondary">
         <div className="container px-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {partners.map((partner, index) => (
               <motion.div
                 key={index}
@@ -48,21 +106,26 @@ const Clientele = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
-                className="aspect-[3/2] bg-card border border-border/50 rounded-xl flex items-center justify-center p-8 group cursor-pointer transition-all duration-500 hover:border-primary/30"
+                whileHover={{ scale: 1.03, y: -5 }}
+                className="bg-card border border-border/50 rounded-xl overflow-hidden group cursor-pointer transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10"
               >
-                {/* Placeholder for partner logo */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-16 h-16 rounded-full bg-background-secondary mx-auto mb-3 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
-                      <span className="font-display text-2xl font-bold text-muted-foreground group-hover:text-primary transition-colors duration-300">
-                        {partner.charAt(8) || "P"}
-                      </span>
-                    </div>
-                    <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                      {partner}
-                    </span>
-                  </div>
+                {/* Logo Container */}
+                <div className="aspect-[4/3] bg-white flex items-center justify-center p-6 border-b border-border/30">
+                  <img 
+                    src={partner.logo} 
+                    alt={`${partner.name} logo`}
+                    className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                
+                {/* Description */}
+                <div className="p-6">
+                  <h3 className="font-display text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                    {partner.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {partner.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
