@@ -7,45 +7,45 @@ import logoImg from "@/assets/theion-logo.jpg";
 const services = [
   {
     id: "digital",
-    name: "Theon Digital",
+    name: "Theion Digital",
     description: "Cutting-edge software solutions and digital transformation.",
     icon: Monitor,
-    link: "/theon-digital"
+    link: "/theion-digital"
   },
   {
     id: "overseas",
-    name: "Theon Overseas",
+    name: "Theion Overseas",
     description: "Global expansion and international business solutions.",
     icon: Globe,
-    link: "/theon-overseas"
+    link: "/theion-overseas"
   },
   {
     id: "recruiter",
-    name: "Theon Recruiter",
+    name: "Theion Recruiter",
     description: "Premium talent acquisition and workforce solutions.",
     icon: Users,
-    link: "/theon-recruiter"
+    link: "/theion-recruiter"
   },
   {
     id: "education",
-    name: "Theon Education",
+    name: "Theion Education",
     description: "Professional training and skill development programs.",
     icon: GraduationCap,
-    link: "/theon-education"
+    link: "/theion-education"
   },
   {
     id: "travel",
-    name: "Theon Travel",
+    name: "Theion Travel",
     description: "Corporate travel management and executive services.",
     icon: Plane,
-    link: "/theon-travel"
+    link: "/theion-travel"
   },
   {
     id: "technologies",
-    name: "Theon Technologies",
+    name: "Theion Technologies",
     description: "Enterprise technology consulting and infrastructure.",
     icon: Server,
-    link: "/theon-technologies"
+    link: "/theion-technologies"
   },
 ];
 
@@ -202,7 +202,7 @@ const ServicesOrbit = () => {
                       <Icon className={`w-6 h-6 md:w-8 md:h-8 mb-1 ${activeService === service.id ? 'text-primary' : 'text-muted-foreground group-hover:text-primary transition-colors'}`} />
 
                       <span className={`text-[9px] md:text-[11px] font-medium leading-tight ${activeService === service.id ? 'text-primary' : 'text-foreground/80'}`}>
-                        {service.name.replace("Theon ", "")}
+                        {service.name.replace("Theion ", "")}
                       </span>
                     </motion.div>
 

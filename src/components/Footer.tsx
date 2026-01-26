@@ -22,12 +22,12 @@ const Footer = () => {
     {
       title: "Services",
       links: [
-        { name: "Theon Digital", href: "/theon-digital" },
-        { name: "Theon Overseas", href: "/theon-overseas" },
-        { name: "Theon Recruiter", href: "/theon-recruiter" },
-        { name: "Theon Education", href: "/theon-education" },
-        { name: "Theon Travel", href: "/theon-travel" },
-        { name: "Theon Technologies", href: "/theon-technologies" },
+        { name: "Theion Digital", href: "/theion-digital" },
+        { name: "Theion Overseas", href: "/theion-overseas" },
+        { name: "Theion Recruiter", href: "/theion-recruiter" },
+        { name: "Theion Education", href: "/theion-education" },
+        { name: "Theion Travel", href: "/theion-travel" },
+        { name: "Theion Technologies", href: "/theion-technologies" },
       ],
     },
   ];

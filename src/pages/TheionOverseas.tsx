@@ -4,42 +4,40 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import heroImg from "@/assets/services/theon-recruiter.jpg";
-import executiveSearchImg from "@/assets/services/recruiter/executive_search.png";
-import bulkHiringImg from "@/assets/services/recruiter/bulk_hiring.png";
-import specializedRecruitmentImg from "@/assets/services/recruiter/specialized_recruitment.png";
-import rpoServicesImg from "@/assets/services/recruiter/rpo_services.png";
+import heroImg from "@/assets/services/theon-overseas.jpg";
+import immigrationConsultingImg from "@/assets/services/overseas/immigration_consulting.png";
+import internationalPlacementsImg from "@/assets/services/overseas/international_placements.png";
+import documentProcessingImg from "@/assets/services/overseas/document_processing.png";
+import relocationSupportImg from "@/assets/services/overseas/relocation_support.png";
 
 const services = [
   {
-    image: executiveSearchImg,
-    title: "Executive Search",
-    description: "Specialized recruitment for C-suite and senior leadership positions across industries.",
+    image: immigrationConsultingImg,
+    title: "Immigration Consulting",
+    description: "Expert guidance on visa applications, work permits, and immigration processes for multiple countries.",
   },
   {
-    image: bulkHiringImg,
-    title: "Bulk Hiring",
-    description: "Efficient large-scale recruitment solutions for organizations with high-volume hiring needs.",
+    image: internationalPlacementsImg,
+    title: "International Placements",
+    description: "Connect with global opportunities through our extensive network of international employers.",
   },
   {
-    image: specializedRecruitmentImg,
-    title: "Specialized Recruitment",
-    description: "Targeted talent acquisition for niche roles in IT, healthcare, engineering, and more.",
+    image: documentProcessingImg,
+    title: "Document Processing",
+    description: "Comprehensive document verification, attestation, and processing services.",
   },
   {
-    image: rpoServicesImg,
-    title: "RPO Services",
-    description: "Comprehensive Recruitment Process Outsourcing to streamline your entire hiring workflow.",
+    image: relocationSupportImg,
+    title: "Relocation Support",
+    description: "End-to-end relocation assistance including accommodation, banking, and settlement services.",
   },
 ];
 
-const stats = [
-  { value: "5000+", label: "Candidates Placed" },
-  { value: "200+", label: "Client Companies" },
-  { value: "15+", label: "Industries Served" }
+const destinations = [
+  "United Kingdom", "United States", "Canada", "Australia", "Germany", "UAE"
 ];
 
-const TheonRecruiter = () => {
+const TheonOverseas = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -55,18 +53,18 @@ const TheonRecruiter = () => {
               transition={{ duration: 0.8 }}
             >
               <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
-                Talent Solutions
+                Global Opportunities
               </span>
               <h1 className="font-display text-4xl md:text-6xl font-semibold text-foreground mt-4 mb-6">
-                Theon <span className="text-gradient-gold">Recruiter</span>
+                Theion <span className="text-gradient-gold">Overseas</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Premium talent acquisition and workforce solutions. We connect exceptional
-                candidates with leading organizations to build high-performing teams.
+                Your gateway to international opportunities. We help professionals and
+                businesses expand beyond borders with expert immigration and relocation services.
               </p>
               <Link to="/contact-us">
                 <Button className="btn-gold rounded-full px-8 py-6">
-                  Start Hiring <ArrowRight className="ml-2 w-5 h-5" />
+                  Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
             </motion.div>
@@ -80,7 +78,7 @@ const TheonRecruiter = () => {
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
                 <img
                   src={heroImg}
-                  alt="Theon Recruiter Services"
+                  alt="Theion Overseas Services"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -89,30 +87,8 @@ const TheonRecruiter = () => {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-12 bg-background-secondary border-y border-border/30">
-        <div className="container px-6">
-          <div className="grid grid-cols-3 gap-8">
-            {stats.map((stat) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <span className="block font-display text-3xl md:text-4xl font-bold text-gradient-gold">
-                  {stat.value}
-                </span>
-                <span className="text-sm text-muted-foreground mt-2">{stat.label}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Services */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background-secondary">
         <div className="container px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -124,7 +100,7 @@ const TheonRecruiter = () => {
               Our Services
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mt-4">
-              Recruitment Solutions
+              What We Offer
             </h2>
           </motion.div>
 
@@ -161,6 +137,40 @@ const TheonRecruiter = () => {
         </div>
       </section>
 
+      {/* Destinations */}
+      <section className="py-20 bg-background">
+        <div className="container px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
+              Popular Destinations
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mt-4">
+              Where We Can Help You Go
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {destinations.map((destination, index) => (
+              <motion.div
+                key={destination}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="p-6 bg-card rounded-xl border border-border/50 text-center hover:border-primary/50 transition-all duration-300"
+              >
+                <span className="text-foreground font-medium">{destination}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Who Is It For */}
       <section className="py-20 bg-background-secondary">
         <div className="container px-6">
@@ -177,20 +187,10 @@ const TheonRecruiter = () => {
                 Who Is It For?
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Our recruitment services cater to companies of all sizes—from startups building
-                their founding teams to large enterprises scaling their workforce. We also help
-                job seekers find their dream roles at top organizations.
+                Our overseas services are designed for professionals seeking international careers,
+                students pursuing education abroad, businesses expanding globally, and families
+                looking to relocate to new countries for better opportunities.
               </p>
-              <div className="grid md:grid-cols-2 gap-6 mt-12">
-                <div className="p-6 bg-card rounded-xl border border-border/50">
-                  <h3 className="text-foreground font-semibold mb-2">For Employers</h3>
-                  <p className="text-muted-foreground text-sm">Find the right talent faster with our expert recruitment team.</p>
-                </div>
-                <div className="p-6 bg-card rounded-xl border border-border/50">
-                  <h3 className="text-foreground font-semibold mb-2">For Job Seekers</h3>
-                  <p className="text-muted-foreground text-sm">Access exclusive job opportunities at leading companies.</p>
-                </div>
-              </div>
             </motion.div>
           </div>
         </div>
@@ -206,10 +206,10 @@ const TheonRecruiter = () => {
             className="text-center max-w-2xl mx-auto"
           >
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-6">
-              Ready to Build Your Dream Team?
+              Start Your International Journey
             </h2>
             <p className="text-muted-foreground mb-8">
-              Partner with us to find exceptional talent for your organization.
+              Take the first step towards your global aspirations. Contact us today.
             </p>
             <Link to="/contact-us">
               <Button className="btn-gold rounded-full px-10 py-6 text-lg">
@@ -225,4 +225,4 @@ const TheonRecruiter = () => {
   );
 };
 
-export default TheonRecruiter;
+export default TheonOverseas;
