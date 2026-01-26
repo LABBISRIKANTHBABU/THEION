@@ -10,12 +10,12 @@ import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
 import Clientele from "./pages/Clientele";
 import ContactUs from "./pages/ContactUs";
-import TheonDigital from "./pages/TheonDigital";
-import TheonOverseas from "./pages/TheonOverseas";
-import TheonRecruiter from "./pages/TheonRecruiter";
-import TheonEducation from "./pages/TheonEducation";
-import TheonTravel from "./pages/TheonTravel";
-import TheonTechnologies from "./pages/TheonTechnologies";
+import TheionDigital from "./pages/TheionDigital";
+import TheionOverseas from "./pages/TheionOverseas";
+import TheionRecruiter from "./pages/TheionRecruiter";
+import TheionEducation from "./pages/TheionEducation";
+import TheionTravel from "./pages/TheionTravel";
+import TheionTechnologies from "./pages/TheionTechnologies";
 import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -33,12 +33,12 @@ const AppRoutes = () => {
         <Route path="/about-us" element={<PageTransition><AboutUs /></PageTransition>} />
         <Route path="/clientele" element={<PageTransition><Clientele /></PageTransition>} />
         <Route path="/contact-us" element={<PageTransition><ContactUs /></PageTransition>} />
-        <Route path="/theon-digital" element={<PageTransition><TheonDigital /></PageTransition>} />
-        <Route path="/theon-overseas" element={<PageTransition><TheonOverseas /></PageTransition>} />
-        <Route path="/theon-recruiter" element={<PageTransition><TheonRecruiter /></PageTransition>} />
-        <Route path="/theon-education" element={<PageTransition><TheonEducation /></PageTransition>} />
-        <Route path="/theon-travel" element={<PageTransition><TheonTravel /></PageTransition>} />
-        <Route path="/theon-technologies" element={<PageTransition><TheonTechnologies /></PageTransition>} />
+        <Route path="/theion-digital" element={<PageTransition><TheionDigital /></PageTransition>} />
+        <Route path="/theion-overseas" element={<PageTransition><TheionOverseas /></PageTransition>} />
+        <Route path="/theion-recruiter" element={<PageTransition><TheionRecruiter /></PageTransition>} />
+        <Route path="/theion-education" element={<PageTransition><TheionEducation /></PageTransition>} />
+        <Route path="/theion-travel" element={<PageTransition><TheionTravel /></PageTransition>} />
+        <Route path="/theion-technologies" element={<PageTransition><TheionTechnologies /></PageTransition>} />
         <Route path="/auth" element={<PageTransition><AuthPage /></PageTransition>} />
         <Route path="/get-started" element={<PageTransition><AuthPage /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><ProfilePage /></PageTransition>} />

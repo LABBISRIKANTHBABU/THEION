@@ -61,7 +61,7 @@ const TheonEducation = () => {
                 Learning & Development
               </span>
               <h1 className="font-display text-4xl md:text-6xl font-semibold text-foreground mt-4 mb-6">
-                Theon <span className="text-gradient-gold">Education</span>
+                Theion <span className="text-gradient-gold">Education</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed mb-8">
                 Empowering professionals with world-class training and skill development
@@ -83,7 +83,7 @@ const TheonEducation = () => {
               <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
                 <img
                   src={heroImg}
-                  alt="Theon Education Programs"
+                  alt="Theion Education Programs"
                   className="w-full h-80 object-cover"
                 />
               </div>
