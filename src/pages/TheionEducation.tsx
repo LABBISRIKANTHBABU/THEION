@@ -5,33 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import heroImg from "@/assets/services/theon-education.jpg";
-import technicalTrainingImg from "@/assets/services/education/technical_training.png";
-import corporateTrainingImg from "@/assets/services/education/corporate_training.png";
-import professionalCertificationsImg from "@/assets/services/education/professional_certifications.png";
-import skillDevelopmentImg from "@/assets/services/education/skill_development.png";
 
-const programs = [
-  {
-    image: technicalTrainingImg,
-    title: "Technical Training",
-    description: "Industry-relevant courses in software development, data science, cloud computing, and cybersecurity.",
-  },
-  {
-    image: corporateTrainingImg,
-    title: "Corporate Training",
-    description: "Customized training programs for organizations to upskill their workforce.",
-  },
-  {
-    image: professionalCertificationsImg,
-    title: "Professional Certifications",
-    description: "Preparation courses for globally recognized certifications in various domains.",
-  },
-  {
-    image: skillDevelopmentImg,
-    title: "Skill Development",
-    description: "Soft skills, leadership, and management training for career advancement.",
-  },
-];
+
 
 const features = [
   "Expert Industry Instructors",
@@ -92,7 +67,7 @@ const TheonEducation = () => {
         </div>
       </section>
 
-      {/* Programs */}
+      {/* Global Education Opportunities */}
       <section className="py-20 bg-background-secondary">
         <div className="container px-6">
           <motion.div
@@ -102,41 +77,56 @@ const TheonEducation = () => {
             className="text-center mb-16"
           >
             <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
-              Our Programs
+              Global Education Opportunities
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mt-4">
-              What We Offer
+              Study UG & PG Programs in Top Destinations
             </h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Explore world-class university programs in leading education destinations. We guide you through the entire process from university selection to visa approval.
+            </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {programs.map((program, index) => (
-              <motion.div
-                key={program.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="card-premium overflow-hidden group"
-              >
-                <div className="relative h-64 w-full overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
-                  <img
-                    src={program.image}
-                    alt={program.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-8">
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
-                    {program.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {program.description}
-                  </p>
-                </div>
-              </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[
+              { name: "United States", code: "us" },
+              { name: "Canada", code: "ca" },
+              { name: "United Kingdom", code: "gb" },
+              { name: "Europe", code: "eu" }, // Represents Europe
+              { name: "Middle East", code: "ae" }, // Using UAE as proxy for Middle East hub
+              { name: "China", code: "cn" },
+              { name: "Japan", code: "jp" },
+              { name: "Australia", code: "au" },
+              { name: "New Zealand", code: "nz" },
+            ].map((country, index) => (
+              <Link to="/contact-us" key={country.code}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="card-premium p-6 flex flex-col items-center justify-center gap-4 group cursor-pointer h-full border border-primary/10 hover:border-primary/40 bg-card hover:bg-card/80 transition-all duration-300 rounded-xl shadow-lg hover:shadow-primary/10"
+                >
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-background shadow-md group-hover:shadow-lg transition-shadow duration-300 relative">
+                    <img
+                      src={`https://flagcdn.com/${country.code}.svg`}
+                      alt={`${country.name} Flag`}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300" />
+                  </div>
+                  <div className="text-center">
+                    <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                      {country.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1">UG & PG Programs</p>
+                  </div>
+                  <span className="text-xs text-primary/60 uppercase tracking-widest font-medium group-hover:text-primary transition-colors mt-2">
+                    Enquire Now
+                  </span>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>

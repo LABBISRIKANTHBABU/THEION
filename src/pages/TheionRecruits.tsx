@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -484,6 +486,90 @@ const TheionRecruits = () => {
                 <span className="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors text-center">{partner.name}</span>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Partner With Us Section */}
+      <section className="py-20 bg-background border-t border-border/40">
+        <div className="container px-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="text-primary text-sm tracking-[0.3em] uppercase font-medium">
+                Collaboration
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mt-4 mb-4">
+                Partner or Collaborate With Us
+              </h2>
+              <p className="text-muted-foreground">
+                Are you a company or organization looking to collaborate with Theion Overseas? Share your details and our team will get in touch with you.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border/50 rounded-2xl p-8 md:p-10 shadow-lg">
+              <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert("Thank you for reaching out. Your partnership request has been sent to our team."); }}>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="companyName">Company Name <span className="text-destructive">*</span></Label>
+                    <Input id="companyName" placeholder="Enter your company name" required className="bg-background" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="country">Country <span className="text-destructive">*</span></Label>
+                    <Select required>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder="Select Country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="de">Germany</SelectItem>
+                        <SelectItem value="uk">United Kingdom</SelectItem>
+                        <SelectItem value="us">United States</SelectItem>
+                        <SelectItem value="au">Australia</SelectItem>
+                        <SelectItem value="jp">Japan</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="contactPerson">Contact Person <span className="text-destructive">*</span></Label>
+                    <Input id="contactPerson" placeholder="Full Name" required className="bg-background" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Official Email Address <span className="text-destructive">*</span></Label>
+                    <Input id="email" type="email" placeholder="name@company.com" required className="bg-background" />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number <span className="text-destructive">*</span></Label>
+                    <Input id="phone" type="tel" placeholder="+1 234 567 890" required className="bg-background" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="partnershipType">Partnership Type <span className="text-destructive">*</span></Label>
+                    <Input id="partnershipType" placeholder="Enter Type (e.g. Recruitment, Training)" required className="bg-background" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Briefly describe how you would like to collaborate with Theion Overseas..."
+                    className="min-h-[120px] bg-background resize-y"
+                  />
+                </div>
+
+                <div className="pt-4 flex justify-center">
+                  <Button type="submit" className="btn-gold w-full md:w-auto px-12 py-6 text-lg rounded-lg font-semibold">
+                    Send Partnership Request
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </section>
